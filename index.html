@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite + Vue</title>
+
+  <style>
+    .music-item {
+      width: 230px;
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #31c27c;
+      margin: 30px;
+    }
+
+    .song-info {
+      flex-grow: 1;
+    }
+
+    .play-title {
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+
+    .play-icon {
+      width: 30px;
+      height: 30px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .play-icon:before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-40%, -50%);
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 8px 0 8px 16px;
+      border-color: transparent transparent transparent #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="music">
+    <div class="music-item" data-name="晴天">
+      <div class="song-info">
+        <span class="play-title">晴天</span>
+      </div>
+      <i class="play-icon"></i>
+    </div>
+    <div class="music-item" data-name="夜曲">
+      <div class="song-info">
+        <span class="play-title">夜曲</span>
+      </div>
+      <i class="play-icon"></i>
+    </div>
+    <div class="music-item" data-name="本草纲目">
+      <div class="song-info">
+        <span class="play-title">本草纲目</span>
+      </div>
+      <i class="play-icon"></i>
+    </div>
+  </div>
+
+  </div>
+
+  <script>
+    const btns = document.querySelectorAll('.music-item')
+
+    // 同源  http://localhost:5173/
+    const channel = new BroadcastChannel('music')
+
+
+    for (const btn of btns) {
+      btn.onclick = function () {
+        const name = this.dataset.name;
+        // window.open('./src/static/Audio.html?name=' + name, '_blank')
+
+        // 打开一个页面  music 刷新页面
+        // window.open('./src/static/Audio.html?name=' + name, 'music')
+
+        //  无刷新 
+
+
+        // 是否开启新页面
+
+        let n = +localStorage.getItem('music')
+
+        if (!isNaN(n) && n > 0) {
+          channel.postMessage(name)
+        } else {
+          window.open('./src/static/Audio.html?name=' + name, '_blank')
+        }
+        console.log(n)
+      }
+    }
+  </script>
+</body>
+
+</html>
